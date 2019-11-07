@@ -1,0 +1,670 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+namespace proect_practica_3
+{
+    /// <summary>
+    /// Логика взаимодействия для LEJAT_SOSAT.xaml
+    /// </summary>
+    public partial class LEJAT_SOSAT : Window
+    {
+        public LEJAT_SOSAT()
+        {
+            InitializeComponent();
+        }
+
+        private void insertbutton_Click(object sender, RoutedEventArgs e)
+        {
+            string first = text1.Text;
+            string second = text2.Text;
+            string third = text3.Text;
+            string four = text4.Text;
+            string five = text5.Text;
+            string sex = text6.Text;
+
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            string checkmd = $"insert into Товар ([Название], [Тип], Цена, id_клиента, объем, гарантия) values('{first}', '{second}', {third}, {four}, '{five}', {sex})";
+
+            SqlCommand check = new SqlCommand(checkmd, one);
+            one.Open();
+            check.Prepare();
+                    check.ExecuteNonQuery();
+            MessageBox.Show("dobavil");
+            one.Close();
+        }
+
+        private void deletetbutton_Click(object sender, RoutedEventArgs e)
+        {
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+            string seven = text7.Text;
+
+            string checkmd = $"Delete From Товар Where[id_клиента] = '{seven}'";
+
+            SqlCommand check = new SqlCommand(checkmd, one);
+            one.Open();
+            check.Prepare();
+            check.ExecuteNonQuery();
+            MessageBox.Show("delete");
+            one.Close();
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 window1 = new Window1();
+            this.Close();
+            window1.Show();
+        }
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using proect_practica_3;
+
+namespace WpfApp1
+{
+    /// <summary>
+    /// Логика взаимодействия для MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+
+        private void enter_Click(object sender, RoutedEventArgs e)
+        {
+            string logincheck = label_login.Text;
+            string passwordcheck = password.Password;
+            string checkmd = $"Select * from reg where login = '{logincheck}' and password = '{passwordcheck}'";
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+            SqlCommand check = new SqlCommand(checkmd, one);
+            one.Open();
+            check.Prepare();
+            check.ExecuteNonQuery();
+            if (logincheck == (string)check.ExecuteScalar())
+            {
+
+                //MessageBox.Show("ok");
+                //menu menu = new menu();
+                //this.Close();
+                //menu.Show();
+                Window1 window1 = new Window1();
+                this.Close();
+                window1.Show();
+
+            }
+            else
+            {
+                MessageBox.Show("Неверно введен логин или пароль");
+                //    Window1 window1 = new Window1();
+                //    this.Close();
+                //    window1.Show();
+            }
+
+        }
+
+        private void registration_Click(object sender, RoutedEventArgs e)
+        {
+            //Window1 window1 = new Window1();
+            //this.Close();
+            //window1.Show();
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using proect_practica_3;
+
+
+namespace proect_practica_3
+{
+    /// <summary>
+    /// Логика взаимодействия для Window1.xaml
+    /// </summary>
+    public partial class Window1 : Window
+    {
+        public Window1()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Window3 window3 = new Window3();
+            this.Close();
+            window3.Show();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window4 window4 = new Window4();
+            this.Close();
+            window4.Show();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Window2 window2 = new Window2();
+            this.Close();
+            window2.Show();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Window5 window5 = new Window5();
+            this.Close();
+            window5.Show();
+        }
+
+        private void s1_Click(object sender, RoutedEventArgs e)
+        {
+            {
+                var task = new Task(() =>
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start("helperRSPO.chm");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка со справочником");
+                    }
+                });
+                task.Start();
+            }
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using proect_practica_3;
+
+namespace proect_practica_3
+{
+    /// <summary>
+    /// Логика взаимодействия для Window2.xaml
+    /// </summary>
+    public partial class Window2 : Window
+    {
+        pr2 d;
+        public Window2()
+        {
+            InitializeComponent();
+        }
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            pr2 d = new pr2();
+            d = new pr2();
+            combo1.ItemsSource = d.Клиент.ToList();
+
+            //SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            //string processor = "select Фамилия, Имя, Отчество, Номер_телефона as телефон from Клиент ";
+            //SqlCommand check = new SqlCommand(processor, one);
+            //DataTable dataTable = new DataTable();
+            //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(check);
+            //sqlDataAdapter.Fill(dataTable);
+            //DataGrid2.ItemsSource = dataTable.AsDataView();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window1 window1 = new Window1();
+            this.Close();
+            window1.Show();
+        }
+
+        private void combo1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            pr2 d = new pr2();
+            d = new pr2();
+            combo1.ItemsSource = d.Клиент.ToList();
+        }
+
+   
+        private void adminbutton_Click(object sender, RoutedEventArgs e)
+        {
+            LEJAT_SOSAT a = new LEJAT_SOSAT();
+            this.Close();
+            a.Show();
+        }
+
+        private void deletebutton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using proect_practica_3;
+using Excel = Microsoft.Office.Interop.Excel;
+using Word = Microsoft.Office.Interop.Word;
+using Microsoft.Office.Interop.Excel;
+
+namespace proect_practica_3
+{
+    /// <summary>
+    /// Логика взаимодействия для Window3.xaml
+    /// </summary>
+    public partial class Window3 : System.Windows.Window
+    {
+        public Window3()
+        {
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Datagreed.Items.Clear();
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            string processor = "select Название, Цена, гарантия from Товар where Тип ='услуга'";
+            SqlCommand check = new SqlCommand(processor, one);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(check);
+            sqlDataAdapter.Fill(dataTable);
+            Datagreed.ItemsSource = dataTable.AsDataView();
+
+        }
+
+        private void Datagreed_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Vmenu_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 window1 = new Window1();
+            this.Close();
+            window1.Show();
+        }
+
+        private void bt1_Click(object sender, RoutedEventArgs e)
+        {
+            //if(Datagreed.ColumnDisplayIndexCh)
+            //DataTable DT = new DataTable();
+            //SqlDataAdapter adapt = new SqlDataAdapter();
+            //adapt.Fill(DT);
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Excel.Application excel = new Excel.Application();
+            excel.Visible = true;
+            Workbook workbook = excel.Workbooks.Add(System.Reflection.Missing.Value);
+            Worksheet sheet1 = (Worksheet)workbook.Sheets[1];
+
+            for (int j = 0; j < Datagreed.Columns.Count; j++)
+            {
+                Range myRange = (Range)sheet1.Cells[1, j + 1];
+                sheet1.Cells[1, j + 1].Font.Bold = true;
+                sheet1.Columns[j + 1].ColumnWidth = 15;
+                myRange.Value2 = Datagreed.Columns[j].Header;
+            }
+            for (int i = 0; i < Datagreed.Columns.Count; i++)
+            {
+                for (int j = 0; j < Datagreed.Items.Count; j++)
+                {
+                    TextBlock b = Datagreed.Columns[i].GetCellContent(Datagreed.Items[j]) as TextBlock;
+                    Microsoft.Office.Interop.Excel.Range myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[j + 2, i + 1];
+                    myRange.Value2 = b.Text;
+                }
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            string processor = "select Название, Цена, гарантия from Товар where Тип ='услуга' order by [Цена] asc ";
+            SqlCommand check = new SqlCommand(processor, one);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(check);
+            sqlDataAdapter.Fill(dataTable);
+            Datagreed.ItemsSource = dataTable.AsDataView();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            string processor = "select Название, Цена, гарантия from Товар where Тип ='услуга' order by [Цена] desc ";
+            SqlCommand check = new SqlCommand(processor, one);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(check);
+            sqlDataAdapter.Fill(dataTable);
+            Datagreed.ItemsSource = dataTable.AsDataView();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            string processor = "select Название, Цена, гарантия from Товар  where [id_клиента]='7'  order by [Цена] asc ";
+            SqlCommand check = new SqlCommand(processor, one);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(check);
+            sqlDataAdapter.Fill(dataTable);
+            Datagreed.ItemsSource = dataTable.AsDataView();
+        }
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using proect_practica_3;
+
+namespace proect_practica_3
+{
+    /// <summary>
+    /// Логика взаимодействия для Window4.xaml
+    /// </summary>
+    public partial class Window4 : Window
+    {
+        public Window4()
+        {
+            InitializeComponent();
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            SqlConnection one = new SqlConnection(@"Data Source=MAX-T430;Initial Catalog=practica_2;Integrated Security=True");
+
+            string processor = "select Название, Цена, объем, гарантия, дата as [дата производства] from Товар where Тип ='мотоцикл'";
+            SqlCommand check = new SqlCommand(processor, one);
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(check);
+            sqlDataAdapter.Fill(dataTable);
+            DataGrid.ItemsSource = dataTable.AsDataView();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window1 window1 = new Window1();
+            this.Close();
+            window1.Show();
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Word = Microsoft.Office.Interop.Word;
+using System.Reflection;
+
+
+namespace proect_practica_3
+{
+    /// <summary>
+    /// Логика взаимодействия для Window5.xaml
+    /// </summary>
+    public partial class Window5 : Window
+    {
+        Word._Application application;
+        Word._Document document;
+        Object missingObj = System.Reflection.Missing.Value;
+        Object trueObj = true;
+        Object falseObj = false;
+
+        public Window5()
+        {
+            InitializeComponent();
+        }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //if (Convert.ToInt32(tx1.Text) < 0) 
+            if ( tx1.Text == "0" || tx1.Text == "-1" || tx1.Text == "-2" || tx1.Text == "-3" || tx1.Text == "-4" || tx1.Text == "-5" || tx1.Text == "-6" || tx1.Text == "-7" || tx1.Text == "-8" || tx1.Text == "-9" || tx1.Text == "-10" || tx2.Text == "0" || tx2.Text == "-1" || tx2.Text == "-2" || tx2.Text == "-3" || tx2.Text == "-4" || tx2.Text == "-5" || tx2.Text == "-6" || tx2.Text == "-7" || tx2.Text == "-8" || tx2.Text == "-9" || tx2.Text == "-10" || tx3.Text == "0" || tx3.Text == "-1" || tx3.Text == "-2" || tx3.Text == "-3" || tx3.Text == "-4" || tx3.Text == "-5" || tx3.Text == "-6" || tx3.Text == "-7" || tx3.Text == "-8" || tx3.Text == "-9" || tx3.Text == "-10" || tx4.Text == "0" || tx4.Text == "-1" || tx4.Text == "-2" || tx4.Text == "-3" || tx4.Text == "-4" || tx4.Text == "-5" || tx4.Text == "-6" || tx4.Text == "-7" || tx4.Text == "-8" || tx4.Text == "-9" || tx4.Text == "-10" || tx5.Text == "0" || tx5.Text == "-1" || tx5.Text == "-2" || tx5.Text == "-3" || tx5.Text == "-4" || tx5.Text == "-5" || tx5.Text == "-6" || tx5.Text == "-7" || tx5.Text == "-8" || tx5.Text == "-9" || tx5.Text == "-10" || tx6.Text == "0" || tx6.Text == "-1" || tx6.Text == "-2" || tx6.Text == "-3" || tx6.Text == "-4" || tx6.Text == "-5" || tx6.Text == "-6" || tx6.Text == "-7" || tx6.Text == "-8" || tx6.Text == "-9" || tx6.Text == "-10")
+            {
+                MessageBox.Show("Данные введены неверно(<0)");
+                tx1.Clear();
+                tx2.Clear();
+                tx3.Clear();
+                tx4.Clear();
+                tx5.Clear();
+                tx6.Clear();
+                tx1.Focus();
+
+            }
+                      
+          else
+            { 
+            //создаем обьект приложения word
+            application = new Word.Application();
+            // создаем путь к файлу
+            Object templatePathObj = "C:/Users/Max_t430/Documents/Настраиваемые шаблоны Office/dogovor7.dot"; ;
+            try
+            {
+                document = application.Documents.Add(ref templatePathObj, ref missingObj, ref missingObj, ref missingObj);
+            }
+            catch (Exception error)
+            {
+                document.Close(ref falseObj, ref missingObj, ref missingObj);
+                application.Quit(ref missingObj, ref missingObj, ref missingObj);
+                document = null;
+                application = null;
+                throw error;
+            }
+            application.Visible = true;
+            // обьектные строки для Word
+            object strToFindObj = "NAME";
+            object replaceStrObj = Convert.ToString(tx1.Text);
+            object strToFindObj1 = "MODEL";
+            object replaceStrObj1 = Convert.ToString(tx2.Text);
+            object strToFindObj2 = "CAPACITY";
+            object replaceStrObj2 = Convert.ToString(tx3.Text);
+            object strToFindObj3 = "WARRANTY";
+            object replaceStrObj3 = Convert.ToString(tx4.Text);
+            object strToFindObj4 = "COST";
+            object replaceStrObj4 = Convert.ToString(tx5.Text);
+            object strToFindObj5 = "SELLER";
+            object replaceStrObj5 = Convert.ToString(tx6.Text);
+            // диапазон документа Word
+            Word.Range wordRange;
+            //тип поиска и замены
+            object replaceTypeObj;
+            replaceTypeObj = Word.WdReplace.wdReplaceAll;
+                // обходим все разделы документа
+                for (int i = 1; i <= document.Sections.Count; i++)
+                {
+                    // берем всю секцию диапазоном
+                    wordRange = document.Sections[i].Range;
+
+                    /*
+                    Обходим редкий глюк в Find, ПРИЗНАННЫЙ MICROSOFT, метод Execute на некоторых машинах вылетает с ошибкой "Заглушке переданы неправильные данные / Stub received bad data"  Подробности: http://support.microsoft.com/default.aspx?scid=kb;en-us;313104
+                    // выполняем метод поиска и  замены обьекта диапазона ворд
+                    wordRange.Find.Execute(ref strToFindObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing, ref replaceStrObj, ref replaceTypeObj, ref wordMissing, ref wordMissing, ref wordMissing, ref wordMissing);
+                    */
+
+                    Word.Find wordFindObj = wordRange.Find;
+                    object[] wordFindParameters = new object[15] { strToFindObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, replaceStrObj, replaceTypeObj, missingObj, missingObj, missingObj, missingObj };
+
+                    wordFindObj.GetType().InvokeMember("Execute", BindingFlags.InvokeMethod, null, wordFindObj, wordFindParameters);
+
+                    Word.Find wordFindObj1 = wordRange.Find;
+                    object[] wordFindParameters1 = new object[15] { strToFindObj1, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, replaceStrObj1, replaceTypeObj, missingObj, missingObj, missingObj, missingObj };
+
+                    wordFindObj1.GetType().InvokeMember("Execute", BindingFlags.InvokeMethod, null, wordFindObj1, wordFindParameters1);
+
+                    Word.Find wordFindObj2 = wordRange.Find;
+                    object[] wordFindParameters2 = new object[15] { strToFindObj2, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, replaceStrObj2, replaceTypeObj, missingObj, missingObj, missingObj, missingObj };
+
+                    wordFindObj2.GetType().InvokeMember("Execute", BindingFlags.InvokeMethod, null, wordFindObj2, wordFindParameters2);
+
+                    Word.Find wordFindObj3 = wordRange.Find;
+                    object[] wordFindParameters3 = new object[15] { strToFindObj3, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, replaceStrObj3, replaceTypeObj, missingObj, missingObj, missingObj, missingObj };
+
+                    wordFindObj3.GetType().InvokeMember("Execute", BindingFlags.InvokeMethod, null, wordFindObj3, wordFindParameters3);
+
+                    Word.Find wordFindObj4 = wordRange.Find;
+                    object[] wordFindParameters4 = new object[15] { strToFindObj4, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, replaceStrObj4, replaceTypeObj, missingObj, missingObj, missingObj, missingObj };
+
+                    wordFindObj4.GetType().InvokeMember("Execute", BindingFlags.InvokeMethod, null, wordFindObj4, wordFindParameters4);
+
+                    Word.Find wordFindObj5 = wordRange.Find;
+                    object[] wordFindParameters5 = new object[15] { strToFindObj5, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, missingObj, replaceStrObj5, replaceTypeObj, missingObj, missingObj, missingObj, missingObj };
+
+                    wordFindObj5.GetType().InvokeMember("Execute", BindingFlags.InvokeMethod, null, wordFindObj5, wordFindParameters5);
+                }
+               
+            }
+            
+        }
+
+
+        private void tx1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window1 window1 = new Window1();
+            this.Close();
+            window1.Show(); 
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            int q =Convert.ToInt32(tex1.Text);
+            double w = 0;
+            w = q * 0.95;
+            tx5.Text = w.ToString();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            int t = Convert.ToInt32(tex2.Text);
+            double r = 0;
+            r = t * 0.80;
+            tx5.Text = r.ToString();
+        }
+    }
+}
+ 
